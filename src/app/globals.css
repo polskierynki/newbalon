@@ -62,3 +62,20 @@ body {
 .floating {
   animation: float 6s ease-in-out infinite;
 }
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: scroll-left 80s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
