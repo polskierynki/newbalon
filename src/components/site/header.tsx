@@ -3,6 +3,7 @@
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { SocialIcon, type SiteSocialLink } from "@/components/site/social-icon";
 
 const navItems = [
   { href: "#", label: "STRONA GLOWNA" },
@@ -12,7 +13,11 @@ const navItems = [
   { href: "#kontakt", label: "KONTAKT" },
 ];
 
-export function Header() {
+type HeaderProps = {
+  socialLinks?: SiteSocialLink[];
+};
+
+export function Header({ socialLinks = [] }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -137,26 +142,18 @@ export function Header() {
               ZAPYTAJ O WYCENE
             </button>
             <div className="mt-6 flex justify-center space-x-4">
-              <a
-                href="https://www.facebook.com/baloonart"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-dark shadow-sm transition-all hover:bg-primary hover:text-white"
-              >
-                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.88 3.78-3.88 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99A10 10 0 0 0 22 12" />
-                </svg>
-              </a>
-              <a
-                href="https://www.instagram.com/baloonart"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-dark shadow-sm transition-all hover:bg-primary hover:text-white"
-              >
-                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.8A3.95 3.95 0 0 0 3.8 7.75v8.5a3.95 3.95 0 0 0 3.95 3.95h8.5a3.95 3.95 0 0 0 3.95-3.95v-8.5a3.95 3.95 0 0 0-3.95-3.95h-8.5Zm8.95 1.4a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4Z" />
-                </svg>
-              </a>
+              {socialLinks.map((item) => (
+                <a
+                  key={item.id}
+                  href={item.url || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.name}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-dark shadow-sm transition-all hover:bg-primary hover:text-white"
+                >
+                  <SocialIcon icon={item.icon} className="h-4 w-4" />
+                </a>
+              ))}
             </div>
           </div>
         </div>

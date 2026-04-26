@@ -12,20 +12,42 @@ type QuotePayload = {
   message: string;
 };
 
-const eventOptions = [
-  "Urodziny / Impreza prywatna",
-  "Slub i Wesele",
-  "Event Firmowy",
-  "Grab & Go (Odbior osobisty)",
-  "Inne",
-];
+export type QuoteFormConfig = {
+  fullNamePlaceholder: string;
+  phonePlaceholder: string;
+  emailPlaceholder: string;
+  eventPlaceholder: string;
+  eventOptions: string[];
+  budgetPlaceholder: string;
+  budgetOptions: string[];
+  messagePlaceholder: string;
+  submitLabel: string;
+  successMessage: string;
+};
 
-const budgetOptions = [
-  "150 zl - 500 zl (Grab & Go)",
-  "500 zl - 1500 zl",
-  "1500 zl - 3000 zl",
-  "Powyzej 3000 zl",
-];
+export const defaultQuoteFormConfig: QuoteFormConfig = {
+  fullNamePlaceholder: "Imie i Nazwisko *",
+  phonePlaceholder: "Telefon *",
+  emailPlaceholder: "Twoj email *",
+  eventPlaceholder: "Rodzaj imprezy",
+  eventOptions: [
+    "Urodziny / Impreza prywatna",
+    "Slub i Wesele",
+    "Event Firmowy",
+    "Grab & Go (Odbior osobisty)",
+    "Inne",
+  ],
+  budgetPlaceholder: "Zakladany budzet",
+  budgetOptions: [
+    "150 zl - 500 zl (Grab & Go)",
+    "500 zl - 1500 zl",
+    "1500 zl - 3000 zl",
+    "Powyzej 3000 zl",
+  ],
+  messagePlaceholder: "Opisz swoja wizje...",
+  submitLabel: "Wyslij Zapytanie",
+  successMessage: "Dziekujemy! Wyslalas/Wyslales zapytanie.",
+};
 
 const initialValues: QuotePayload = {
   fullName: "",
@@ -37,7 +59,11 @@ const initialValues: QuotePayload = {
   message: "",
 };
 
-export function ContactQuoteForm() {
+type ContactQuoteFormProps = {
+  config?: QuoteFormConfig;
+};
+
+export function ContactQuoteForm({ config = defaultQuoteFormConfig }: ContactQuoteFormProps) {
   const [values, setValues] = useState<QuotePayload>(initialValues);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -73,7 +99,7 @@ export function ContactQuoteForm() {
       }
 
       setValues(initialValues);
-      setSuccessMessage("Dziekujemy! Wyslalas/Wyslales zapytanie.");
+      setSuccessMessage(config.successMessage);
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Wystapil nieoczekiwany blad."
@@ -89,7 +115,7 @@ export function ContactQuoteForm() {
         <input
           type="text"
           className="h-[58px] w-full rounded-xl border border-[#e5dbd7] bg-white px-5 font-sans text-dark outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-          placeholder="Imie i Nazwisko *"
+          placeholder={config.fullNamePlaceholder}
           value={values.fullName}
           onChange={(event) =>
             setValues((prev) => ({ ...prev, fullName: event.target.value }))
@@ -103,7 +129,7 @@ export function ContactQuoteForm() {
           type="tel"
           maxLength={20}
           className="h-[58px] w-full rounded-xl border border-[#e5dbd7] bg-white px-5 font-sans text-dark outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-          placeholder="Telefon *"
+          placeholder={config.phonePlaceholder}
           value={values.phone}
           onChange={(event) =>
             setValues((prev) => ({ ...prev, phone: event.target.value }))
@@ -113,7 +139,7 @@ export function ContactQuoteForm() {
         <input
           type="email"
           className="h-[58px] w-full rounded-xl border border-[#e5dbd7] bg-white px-5 font-sans text-dark outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-          placeholder="Twoj email *"
+          placeholder={config.emailPlaceholder}
           value={values.email}
           onChange={(event) =>
             setValues((prev) => ({ ...prev, email: event.target.value }))
@@ -132,9 +158,9 @@ export function ContactQuoteForm() {
           required
         >
           <option value="" disabled>
-            Rodzaj imprezy
+            {config.eventPlaceholder}
           </option>
-          {eventOptions.map((option) => (
+          {config.eventOptions.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>
@@ -161,9 +187,9 @@ export function ContactQuoteForm() {
           required
         >
           <option value="" disabled>
-            Zakladany budzet
+            {config.budgetPlaceholder}
           </option>
-          {budgetOptions.map((option) => (
+          {config.budgetOptions.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>
@@ -175,7 +201,7 @@ export function ContactQuoteForm() {
         <textarea
           rows={3}
           className="w-full resize-none rounded-xl border border-[#e5dbd7] bg-white p-5 font-sans text-dark outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-          placeholder="Opisz swoja wizje..."
+          placeholder={config.messagePlaceholder}
           value={values.message}
           onChange={(event) =>
             setValues((prev) => ({ ...prev, message: event.target.value }))
@@ -188,7 +214,7 @@ export function ContactQuoteForm() {
         disabled={isDisabled}
         className="flex h-[58px] w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-[#e59fbe] font-sans font-bold text-white transition-all hover:from-primary-hover hover:to-primary disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isSubmitting ? "Wysylanie..." : "Wyslij Zapytanie"}
+        {isSubmitting ? "Wysylanie..." : config.submitLabel}
       </button>
 
       {successMessage ? (

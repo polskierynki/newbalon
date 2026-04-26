@@ -2,7 +2,13 @@ import Image from "next/image";
 
 const year = new Date().getFullYear();
 
-export function Footer() {
+type FooterProps = {
+  footerText?: string;
+};
+
+export function Footer({ footerText }: FooterProps) {
+  const resolvedFooterText = (footerText ?? "© 2025 Nazwa Firmy").replace(/2025/g, String(year));
+
   return (
     <footer className="relative z-20 border-t border-slate-900 bg-black py-8 md:py-10 text-center">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 md:flex-row">
@@ -16,7 +22,7 @@ export function Footer() {
           />
         </div>
         <p className="text-xs text-slate-400 md:text-sm">
-          &copy; {year} o!balon. Tworzymy magiczne dekoracje.
+          {resolvedFooterText}
         </p>
         <div className="flex w-full justify-center md:w-[150px] md:justify-end" />
       </div>

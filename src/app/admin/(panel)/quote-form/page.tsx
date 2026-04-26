@@ -1,0 +1,1 @@
+export { default } from '../../../../../admin-module/app/admin/quote-form/page'

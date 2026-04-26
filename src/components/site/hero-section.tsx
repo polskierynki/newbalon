@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Calendar, Heart, Star } from "lucide-react";
 
 const features = [
@@ -41,8 +41,41 @@ const features = [
   },
 ];
 
-export function HeroSection() {
+const DEFAULT_BG =
+  "https://images.pexels.com/photos/10577008/pexels-photo-10577008.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80";
+
+type HeroSlide = {
+  id: string;
+  url: string;
+  alt: string;
+};
+
+type HeroSectionProps = {
+  heroTitle?: string;
+  heroSubtitle?: string;
+  aboutText?: string;
+  slides?: HeroSlide[];
+};
+
+export function HeroSection({
+  heroTitle = "Tworzymy wyjatkowe chwile",
+  heroSubtitle = "Dekoracje, ktore zachwycaja i zostaja w pamieci.",
+  aboutText = "Zadbamy o kazdy detal Twojej imprezy!",
+  slides = [],
+}: HeroSectionProps) {
   const bgRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const images = slides.length > 0 ? slides.map((s) => s.url) : [DEFAULT_BG];
+
+  // autoplay
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const id = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [images.length]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,15 +91,34 @@ export function HeroSection() {
     <section
       className="relative flex min-h-[90vh] items-center overflow-hidden pt-10 pb-20 md:pt-20 md:pb-28"
     >
-      <div
-        ref={bgRef}
-        className="absolute inset-0 -top-[15%] -bottom-[15%] bg-cover bg-center will-change-transform"
-        style={{
-          backgroundImage:
-            "url('https://images.pexels.com/photos/10577008/pexels-photo-10577008.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80')",
-        }}
-      />
+      {/* Slider backgrounds */}
+      {images.map((url, i) => (
+        <div
+          key={url}
+          ref={i === currentIndex ? bgRef : undefined}
+          className={`absolute inset-0 -top-[15%] -bottom-[15%] bg-cover bg-center will-change-transform transition-opacity duration-1000 ${
+            i === currentIndex ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ backgroundImage: `url('${url}')` }}
+        />
+      ))}
       <div className="absolute inset-0 bg-gradient-to-r from-cream/95 via-cream/85 to-black/40 md:via-cream/70" />
+
+      {/* Dot indicators */}
+      {images.length > 1 ? (
+        <div className="absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 gap-2">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setCurrentIndex(i)}
+              className={`h-2 w-2 rounded-full transition-all ${
+                i === currentIndex ? "bg-primary w-5" : "bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
+      ) : null}
 
       <div className="floating absolute top-[15%] right-8 z-10 hidden lg:right-32 md:block">
         <span className="neon-text block font-script text-[70px] leading-[0.9] lg:text-[100px]">
@@ -80,16 +132,10 @@ export function HeroSection() {
           <div className="mb-6 h-0.5 w-12 bg-gold" />
 
           <h1 className="mb-4 font-serif text-[40px] leading-[1.1] text-dark sm:text-5xl md:mb-6 lg:text-[68px] lg:leading-[1.1]">
-            Tworzymy <br className="hidden sm:block" />
-            wyjatkowe chwile <br />
-            <span className="font-serif text-primary italic">z wyjatkowa oprawa</span>
+            {heroTitle}
           </h1>
-          <p className="mb-2 text-[16px] font-medium text-[#555] sm:text-[18px]">
-            Dekoracje, ktore zachwycaja i zostaja w pamieci.
-          </p>
-          <p className="mb-8 text-[16px] font-medium text-[#555] sm:mb-10 sm:text-[18px]">
-            Zadbamy o kazdy detal Twojej imprezy!
-          </p>
+          <p className="mb-2 text-[16px] font-medium text-[#555] sm:text-[18px]">{heroSubtitle}</p>
+          <p className="mb-8 text-[16px] font-medium text-[#555] sm:mb-10 sm:text-[18px]">{aboutText}</p>
           <a
             href="#oferta"
             className="group mb-4 inline-flex w-full transform items-center justify-center rounded-full bg-primary px-8 py-4 text-[13px] font-bold tracking-widest text-white uppercase shadow-md transition-all hover:-translate-y-1 hover:bg-primary-hover hover:shadow-lg sm:w-auto"
