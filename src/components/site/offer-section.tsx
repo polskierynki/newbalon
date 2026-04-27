@@ -99,7 +99,13 @@ export function OfferSection({
         gotowaGirlanda2: service.gotowa_girlanda_2 ?? '',
         popupText: service.popup_text ?? '',
       }))
-    : fallbackCards;
+    : fallbackCards.map((card) => ({
+        ...card,
+        signatureDetail: '',
+        gotowaGirlanda1: '',
+        gotowaGirlanda2: '',
+        popupText: '',
+      }));
 
   return (
     <section id="oferta" className="relative overflow-hidden bg-beige py-20 lg:py-32">
