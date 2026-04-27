@@ -48,14 +48,9 @@ const fallbackCards = [
 type ServiceItem = {
   id: string;
   title: string;
-  description: string;
-  long_description?: string;
   icon: string;
   position: number;
-  signature_detail?: string;
-  gotowa_girlanda_1?: string;
-  gotowa_girlanda_2?: string;
-  popup_text?: string;
+  photos: string[];
 };
 
 type OfferSectionProps = {
@@ -89,22 +84,18 @@ export function OfferSection({
 
   const cards = services.length
     ? services.map((service, index) => ({
+        id: service.id,
         title: service.title,
-        description: service.description,
-        longDescription: service.long_description ?? "",
         icon: normalizeOfferIconName(service.icon),
-        image: serviceImages[index] || fallbackCards[index % fallbackCards.length].image,
-        signatureDetail: service.signature_detail ?? '',
-        gotowaGirlanda1: service.gotowa_girlanda_1 ?? '',
-        gotowaGirlanda2: service.gotowa_girlanda_2 ?? '',
-        popupText: service.popup_text ?? '',
+        position: service.position,
+        photos: service.photos ?? [],
       }))
-    : fallbackCards.map((card) => ({
-        ...card,
-        signatureDetail: '',
-        gotowaGirlanda1: '',
-        gotowaGirlanda2: '',
-        popupText: '',
+    : fallbackCards.map((card, idx) => ({
+        id: `fallback-${idx}`,
+        title: card.title,
+        icon: card.icon,
+        position: idx,
+        photos: [card.image],
       }));
 
   return (
@@ -184,29 +175,10 @@ export function OfferSection({
               {/* === OPIS + CTA pod zdjęciem — otwarta przestrzeń, zero boxów === */}
               <div className="mt-4 flex flex-1 flex-col px-1">
                 <div className="mb-5 flex-1 pr-1">
-                  {card.signatureDetail && (
-                    <>
-                      <span className="mb-2 block text-[10px] font-semibold tracking-[0.18em] text-primary/70 uppercase">
-                        Signature detail
-                      </span>
-                      <p className="font-serif text-[19px] leading-[1.45] text-[#5f5149] md:text-[21px]">
-                        {card.signatureDetail}
-                      </p>
-                    </>
-                  )}
-                  {card.gotowaGirlanda1 && (
-                    <p className="mt-2 text-[13px] leading-[1.75] text-[#8a7d75]">
-                      {card.gotowaGirlanda1}
-                    </p>
-                  )}
-                  {card.gotowaGirlanda2 && (
-                    <p className="mt-2 text-[13px] leading-[1.75] text-[#8a7d75]">
-                      {card.gotowaGirlanda2}
-                    </p>
-                  )}
-                  <p className="mt-3 min-h-[70px] text-[13px] leading-[1.75] text-[#8a7d75]">
-                    {card.description}
-                  </p>
+                  {/* Wyświetlamy tylko tytuł */}
+                  <h3 className="font-serif text-[22px] font-normal leading-tight text-[#5f5149] md:text-[21px]">
+                    {card.title}
+                  </h3>
                 </div>
 
                 <span className="mt-auto inline-flex w-fit whitespace-nowrap items-center gap-2 border-b border-primary/35 pb-1 text-[10px] font-bold tracking-[0.14em] text-primary uppercase transition-all group-hover:border-primary group-hover:text-primary-hover sm:text-[11px] sm:tracking-[0.18em]">

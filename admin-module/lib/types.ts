@@ -15,14 +15,9 @@ export type GalleryImage = {
 export type Service = {
   id: string
   title: string
-  description: string
-  long_description: string
   icon: string
   position: number
-  signature_detail: string
-  gotowa_girlanda_1: string
-  gotowa_girlanda_2: string
-  popup_text: string
+  photos: string[]
 }
 
 export type Database = {

@@ -18,11 +18,6 @@ export function ServicesManager({ initialServices, initialServicePhotos }: Servi
     const sorted = [...initialServices].sort((a, b) => a.position - b.position)
     return sorted.map((s, index) => ({
       ...s,
-      long_description: s.long_description ?? '',
-      signature_detail: s.signature_detail ?? '',
-      gotowa_girlanda_1: s.gotowa_girlanda_1 ?? '',
-      gotowa_girlanda_2: s.gotowa_girlanda_2 ?? '',
-      popup_text: s.popup_text ?? '',
       photos: initialServicePhotos[index] ?? [],
     }))
   })
@@ -131,11 +126,7 @@ export function ServicesManager({ initialServices, initialServicePhotos }: Servi
       const payload = orderedServices.map((item, i) => ({
         title: item.title,
         description: item.description,
-        long_description: item.long_description ?? '',
-        signature_detail: item.signature_detail ?? '',
-        gotowa_girlanda_1: item.gotowa_girlanda_1 ?? '',
-        gotowa_girlanda_2: item.gotowa_girlanda_2 ?? '',
-        popup_text: item.popup_text ?? '',
+        // tylko title, icon, position, photos
         icon: normalizeOfferIconName(item.icon),
         position: i,
         photos: item.photos,
@@ -175,19 +166,13 @@ export function ServicesManager({ initialServices, initialServicePhotos }: Servi
       </div>
 
       {toast ? (
-        <div
-          className={`rounded-md px-3 py-2 text-sm font-medium ${
-            toast.type === 'success' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-700'
-          }`}
-        >
-          {toast.message}
-        </div>
-      ) : null}
-
-      <div className="space-y-4">
-        {orderedServices.map((service, index) => (
-          <div key={service.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="grid gap-3 md:grid-cols-[220px_1fr]">
+        {
+          id: `temp-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          icon: 'sparkles',
+          title: '',
+          position: nextPosition,
+          photos: [],
+        },
               <label className="space-y-1">
                 <span className="text-xs font-medium text-slate-600">Ikona</span>
                 <div className="rounded-md border border-slate-200 p-2">
@@ -234,64 +219,12 @@ export function ServicesManager({ initialServices, initialServicePhotos }: Servi
                 </label>
 
 
+                {/* Zostaje tylko pole Tytuł */}
                 <label className="space-y-1">
-                  <span className="text-xs font-medium text-slate-600">Signature detail</span>
+                  <span className="text-xs font-medium text-slate-600">Tytuł</span>
                   <input
-                    value={service.signature_detail}
-                    onChange={(e) => updateService(service.id, { signature_detail: e.target.value })}
-                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
-                  />
-                </label>
-
-                <label className="space-y-1">
-                  <span className="text-xs font-medium text-slate-600">Gotowa girlanda do samodzielnego montażu (1)</span>
-                  <input
-                    value={service.gotowa_girlanda_1}
-                    onChange={(e) => updateService(service.id, { gotowa_girlanda_1: e.target.value })}
-                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
-                  />
-                </label>
-
-                <label className="space-y-1">
-                  <span className="text-xs font-medium text-slate-600">Gotowa girlanda do samodzielnego montażu (2)</span>
-                  <input
-                    value={service.gotowa_girlanda_2}
-                    onChange={(e) => updateService(service.id, { gotowa_girlanda_2: e.target.value })}
-                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
-                  />
-                </label>
-
-                <label className="space-y-1">
-                  <span className="text-xs font-medium text-slate-600">Opis (skrócony — widoczny na karcie)</span>
-                  <textarea
-                    rows={3}
-                    value={service.description}
-                    onChange={(e) => updateService(service.id, { description: e.target.value })}
-                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
-                  />
-                </label>
-
-                <label className="space-y-1">
-                  <span className="text-xs font-medium text-slate-600">
-                    Rozszerzony opis{' '}
-                    <span className="font-normal text-slate-400">(wyświetlany w pop-upie po kliknięciu „Dowiedz się więcej")</span>
-                  </span>
-                  <textarea
-                    rows={5}
-                    placeholder="Opisz szczegółowo tę usługę — klient przeczyta to w pop-upie…"
-                    value={service.long_description ?? ''}
-                    onChange={(e) => updateService(service.id, { long_description: e.target.value })}
-                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
-                  />
-                </label>
-
-                <label className="space-y-1">
-                  <span className="text-xs font-medium text-slate-600">Tekst popupu (osobny od long_description)</span>
-                  <textarea
-                    rows={3}
-                    placeholder="Treść popupu..."
-                    value={service.popup_text ?? ''}
-                    onChange={(e) => updateService(service.id, { popup_text: e.target.value })}
+                    value={service.title}
+                    onChange={(e) => updateService(service.id, { title: e.target.value })}
                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
                   />
                 </label>
