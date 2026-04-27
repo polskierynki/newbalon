@@ -9,6 +9,7 @@ export type ServiceModalData = {
   title: string;
   description: string;
   longDescription: string;
+  popupText?: string;
   icon: string;
   image: string;
 };
@@ -156,6 +157,7 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
               {service.description}
             </p>
 
+
             {/* Długi opis z obsługą :check: */}
             {service.longDescription ? (
               <div className="mb-6">
@@ -164,6 +166,15 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
                 </p>
               </div>
             ) : null}
+
+            {/* Osobny tekst popupu */}
+            {service.popupText && (
+              <div className="mb-6">
+                <p className="whitespace-pre-line text-[14px] font-semibold text-primary">
+                  {service.popupText}
+                </p>
+              </div>
+            )}
 
             {/* Separator dekoracyjny */}
             <div className="mb-6 h-px w-full bg-[#e7dac7]" />

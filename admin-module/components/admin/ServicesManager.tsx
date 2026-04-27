@@ -19,6 +19,10 @@ export function ServicesManager({ initialServices, initialServicePhotos }: Servi
     return sorted.map((s, index) => ({
       ...s,
       long_description: s.long_description ?? '',
+      signature_detail: s.signature_detail ?? '',
+      gotowa_girlanda_1: s.gotowa_girlanda_1 ?? '',
+      gotowa_girlanda_2: s.gotowa_girlanda_2 ?? '',
+      popup_text: s.popup_text ?? '',
       photos: initialServicePhotos[index] ?? [],
     }))
   })
@@ -124,6 +128,10 @@ export function ServicesManager({ initialServices, initialServicePhotos }: Servi
         title: item.title,
         description: item.description,
         long_description: item.long_description ?? '',
+        signature_detail: item.signature_detail ?? '',
+        gotowa_girlanda_1: item.gotowa_girlanda_1 ?? '',
+        gotowa_girlanda_2: item.gotowa_girlanda_2 ?? '',
+        popup_text: item.popup_text ?? '',
         icon: normalizeOfferIconName(item.icon),
         position: i,
         photos: item.photos,
@@ -221,6 +229,34 @@ export function ServicesManager({ initialServices, initialServicePhotos }: Servi
                   />
                 </label>
 
+
+                <label className="space-y-1">
+                  <span className="text-xs font-medium text-slate-600">Signature detail</span>
+                  <input
+                    value={service.signature_detail}
+                    onChange={(e) => updateService(service.id, { signature_detail: e.target.value })}
+                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
+                  />
+                </label>
+
+                <label className="space-y-1">
+                  <span className="text-xs font-medium text-slate-600">Gotowa girlanda do samodzielnego montażu (1)</span>
+                  <input
+                    value={service.gotowa_girlanda_1}
+                    onChange={(e) => updateService(service.id, { gotowa_girlanda_1: e.target.value })}
+                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
+                  />
+                </label>
+
+                <label className="space-y-1">
+                  <span className="text-xs font-medium text-slate-600">Gotowa girlanda do samodzielnego montażu (2)</span>
+                  <input
+                    value={service.gotowa_girlanda_2}
+                    onChange={(e) => updateService(service.id, { gotowa_girlanda_2: e.target.value })}
+                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
+                  />
+                </label>
+
                 <label className="space-y-1">
                   <span className="text-xs font-medium text-slate-600">Opis (skrócony — widoczny na karcie)</span>
                   <textarea
@@ -241,6 +277,17 @@ export function ServicesManager({ initialServices, initialServicePhotos }: Servi
                     placeholder="Opisz szczegółowo tę usługę — klient przeczyta to w pop-upie…"
                     value={service.long_description ?? ''}
                     onChange={(e) => updateService(service.id, { long_description: e.target.value })}
+                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
+                  />
+                </label>
+
+                <label className="space-y-1">
+                  <span className="text-xs font-medium text-slate-600">Tekst popupu (osobny od long_description)</span>
+                  <textarea
+                    rows={3}
+                    placeholder="Treść popupu..."
+                    value={service.popup_text ?? ''}
+                    onChange={(e) => updateService(service.id, { popup_text: e.target.value })}
                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none"
                   />
                 </label>

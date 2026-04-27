@@ -90,6 +90,10 @@ export function OfferSection({
         longDescription: service.long_description ?? "",
         icon: normalizeOfferIconName(service.icon),
         image: serviceImages[index] || fallbackCards[index % fallbackCards.length].image,
+        signatureDetail: service.signature_detail ?? '',
+        gotowaGirlanda1: service.gotowa_girlanda_1 ?? '',
+        gotowaGirlanda2: service.gotowa_girlanda_2 ?? '',
+        popupText: service.popup_text ?? '',
       }))
     : fallbackCards;
 
@@ -143,10 +147,6 @@ export function OfferSection({
                 {/* Gradient — ciemny dół */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
 
-                {/* Numer porządkowy — dekoracyjny */}
-                <span className="absolute right-4 top-4 font-serif text-[64px] font-bold leading-none text-white/10 select-none">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
 
                 {/* Tytuł + ikona na dole zdjęcia */}
                 <div className="absolute bottom-0 left-0 right-0 p-5">
@@ -174,12 +174,26 @@ export function OfferSection({
               {/* === OPIS + CTA pod zdjęciem — otwarta przestrzeń, zero boxów === */}
               <div className="mt-4 flex flex-1 flex-col px-1">
                 <div className="mb-5 flex-1 pr-1">
-                  <span className="mb-2 block text-[10px] font-semibold tracking-[0.18em] text-primary/70 uppercase">
-                    Signature detail
-                  </span>
-                  <p className="font-serif text-[19px] leading-[1.45] text-[#5f5149] md:text-[21px]">
-                    "{getLeadText(card.description)}"
-                  </p>
+                  {card.signatureDetail && (
+                    <>
+                      <span className="mb-2 block text-[10px] font-semibold tracking-[0.18em] text-primary/70 uppercase">
+                        Signature detail
+                      </span>
+                      <p className="font-serif text-[19px] leading-[1.45] text-[#5f5149] md:text-[21px]">
+                        {card.signatureDetail}
+                      </p>
+                    </>
+                  )}
+                  {card.gotowaGirlanda1 && (
+                    <p className="mt-2 text-[13px] leading-[1.75] text-[#8a7d75]">
+                      {card.gotowaGirlanda1}
+                    </p>
+                  )}
+                  {card.gotowaGirlanda2 && (
+                    <p className="mt-2 text-[13px] leading-[1.75] text-[#8a7d75]">
+                      {card.gotowaGirlanda2}
+                    </p>
+                  )}
                   <p className="mt-3 min-h-[70px] text-[13px] leading-[1.75] text-[#8a7d75]">
                     {card.description}
                   </p>
