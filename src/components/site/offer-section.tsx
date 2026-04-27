@@ -52,6 +52,10 @@ type ServiceItem = {
   long_description?: string;
   icon: string;
   position: number;
+  signature_detail?: string;
+  gotowa_girlanda_1?: string;
+  gotowa_girlanda_2?: string;
+  popup_text?: string;
 };
 
 type OfferSectionProps = {
